@@ -1,18 +1,17 @@
 % Author: ####
 % Objective: Channel modeling and received signal
 % Syntax:
-%       [y]=channelModeling (ToAs, AoDs, AoAs, Nt, Nr, N, B, Ns)
+%       [y]=channelModeling (ToAs, AoDs, AoAs, Nt, Nr, N, Ts, Ns)
 % Inputs:
 %       ToAs, AoDs, AoAs: Localization ParametersBS 
 %       Nt, Nr: Number of Tx and Rx antennas
-%       N, B, Ns:   Numer of subcarriers, BW and Number of symbols
+%       N, Ts, Ns:   Numer of subcarriers, Sampling Period and Number of symbols
 %
 % Outputs:
 %       y - received signal
 %       
-function [y,x,H]=channelModeling (ToAs, AoDs, AoAs, Nt, Nr, N, B, Ns)
-    h=10;           % Gain
-    Ts=1/B;         % Sampling period in us
+function [y,x,H]=channelModeling (ToAs, AoDs, AoAs, Nt, Nr, N, Ts, Ns)
+    h=10;           % Gain   
     sigma=0.001;      % Noise standard deviation
     L=size(ToAs);   % Number of paths
 

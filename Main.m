@@ -8,7 +8,7 @@
 
 clc;clear;close all
 %% INPUTS
-los=1;              % if los in this simulation (0-no, 1-yes)
+los=2;              % if los in this simulation (0-no, 1-yes)
 b=[-8, 0, 5]';      % BS
 m=[7, 10, 1]';      % MS 
 s1=[-10, 4, 3]';    % SC_1
@@ -22,19 +22,20 @@ Nt=32;              % number of TX antennas
 Nr=32;              % number of RX antennas
 N=10;               % number of subcarriers
 B=100;              % total BW in MHz
+Ts=1/(B);           % Sampling period in us
 Ns=20;              % number of sybols sent
-L_az=14;            % grid resolution for azimuth
-L_el=14;            % grid resolution for elevation
-fin=1;              % Fining step in the DCS-SOMP
+L_az=12;            % grid resolution for azimuth
+L_el=12;            % grid resolution for elevation
+fin=0;              % Fining step in the DCS-SOMP
 
 %% Get Actual parameters
 [ToAs, AoDs, AoAs, L]=getActualParameters(b,m,s,los,c);
 
 %% Stage 1 - Channel modeling 
-[y,x,H]=channelModeling (ToAs, AoDs, AoAs, Nt, Nr, N, B, Ns);
+[y,x,H]=channelModeling (ToAs, AoDs, AoAs, Nt, Nr, N, Ts, Ns);
 
 %% Stage 2 - Parameter Estimation
-[ToAs_E, AoDs_E, AoAs_E]=parameterEstimation (Nt, Nr, Ns, N, B, c, y, x, L, L_az, L_el, H, fin);
+[ToAs_E, AoDs_E, AoAs_E]=parameterEstimation (Nt, Nr, Ns, N, Ts, c, y, x, L, L_az, L_el, H, fin);
 
 %% Verify if LoS exists
 [haveLos]=verifyLos(AoDs_E, AoAs_E, Tol);

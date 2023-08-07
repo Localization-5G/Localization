@@ -4,16 +4,15 @@
 %       [ToAs_E, AoDs_E, AoAs_E]=parameterEstimation (Nt, Nr, Ns, N, B, c, y, x, L, L_az, L_el, H, fin)
 % Inputs:
 %       Nt, Nr, Ns: Antennas Tx, Rx and number of symbols
-%       N, B, c: Numbert of subcariers, BW and propagation speed
+%       N, Ts, c: Numbert of subcariers, Sampling Period and propagation speed
 %       y, x, L: signal transmited, original symbols and number of paths
 %       L_az, L_el, H, fin: Length of Grid sensing, Channel model and option of fine tunning
 %
 % Outputs:
 %       ToAs_E, AoDs_E, AoAs_E - Parameters estimated
 %
-function [ToAs_E, AoDs_E, AoAs_E]=parameterEstimation (Nt, Nr, Ns, N, B, c, y, x, L, L_az, L_el, H, fin)
-    Ts=1/B;         % Sampling period in us
-
+function [ToAs_E, AoDs_E, AoAs_E]=parameterEstimation (Nt, Nr, Ns, N, Ts, c, y, x, L, L_az, L_el, H, fin)
+    
     array_Tx=getArray(Nt);
     array_Rx=getArray(Nr);
 %Grid for the general scenario:    
@@ -65,17 +64,17 @@ function [ToAs_E, AoDs_E, AoAs_E]=parameterEstimation (Nt, Nr, Ns, N, B, c, y, x
 
 
     %% Visualize the signal channel in AOA/AOD space
-    HH=mean(H,3);
-    spec=abs(Ur'*HH*Ut);
-    mesh(abs(spec));
-    xlabel('AOD'); ylabel('AOA');
+%     HH=mean(H,3);
+%     spec=abs(Ur'*HH*Ut);
+%     mesh(abs(spec));
+%     xlabel('AOD'); ylabel('AOA');
 
 
     %% run DCS-SOMP
     [indices,h_hat]=DCSSOMP(yb,Omega,L); 
     
     %% compute the distance
-    distances=zeros(1,L);
+    distances=zeros(1,L);    
     for l=1:L
         distances(l)=-mean(diff(phase(h_hat(l,:))))*(N*Ts)*c/(2*pi); 
         if (distances(l)<0)
