@@ -8,7 +8,7 @@
 
 clc;clear;close all
 %% INPUTS
-los=2;              % if los in this simulation (0-no, 1-yes)
+los=1;              % if los in this simulation (0-no, 1-yes)
 b=[-8, 0, 5]';      % BS
 m=[7, 10, 1]';      % MS 
 s1=[-10, 4, 3]';    % SC_1
